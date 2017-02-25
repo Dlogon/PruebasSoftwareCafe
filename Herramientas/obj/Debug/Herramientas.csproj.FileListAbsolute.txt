@@ -1,0 +1,5 @@
+C:\Users\Diego\Documents\Visual Studio 2015\Projects\LaMorisca\Herramientas\bin\Debug\Herramientas.dll
+C:\Users\Diego\Documents\Visual Studio 2015\Projects\LaMorisca\Herramientas\bin\Debug\Herramientas.pdb
+C:\Users\Diego\Documents\Visual Studio 2015\Projects\LaMorisca\Herramientas\obj\Debug\Herramientas.csprojResolveAssemblyReference.cache
+C:\Users\Diego\Documents\Visual Studio 2015\Projects\LaMorisca\Herramientas\obj\Debug\Herramientas.dll
+C:\Users\Diego\Documents\Visual Studio 2015\Projects\LaMorisca\Herramientas\obj\Debug\Herramientas.pdb
