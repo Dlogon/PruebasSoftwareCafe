@@ -65,18 +65,6 @@ namespace LaMorisca
             this.Hide();
         }
 
-        private void devolucionToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            new FormDevolucion().Show();
-            this.Hide();
-        }
-
-        private void inventarioToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            new FormMovimientoInventario().Show();
-            this.Hide();
-        }
-
         private void productosToolStripMenuItem_Click(object sender, EventArgs e)
         {
             new FormBuscarProducto().Show();
@@ -86,12 +74,6 @@ namespace LaMorisca
         private void clientesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             new FormBuscarCliente().Show();
-            Hide();
-        }
-
-        private void devolu8cionToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            new FormBuscarDevolucion().Show();
             Hide();
         }
 
@@ -133,12 +115,6 @@ namespace LaMorisca
         private void pedidosToolStripMenuItem_Click(object sender, EventArgs e)
         {
             new FormBuscarPedido().Show();
-            Hide();
-        }
-
-        private void inventarioToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            new FormBuscarMovimiento().Show();
             Hide();
         }
 

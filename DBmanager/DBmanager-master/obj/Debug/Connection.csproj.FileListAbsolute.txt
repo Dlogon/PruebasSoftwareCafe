@@ -1,0 +1,10 @@
+C:\Users\Soporte\Documents\Visual Studio 2015\Projects\Joyce\Connection\bin\Debug\Connection.dll
+C:\Users\Soporte\Documents\Visual Studio 2015\Projects\Joyce\Connection\bin\Debug\Connection.pdb
+C:\Users\Soporte\Documents\Visual Studio 2015\Projects\Joyce\Connection\obj\Debug\Connection.dll
+C:\Users\Soporte\Documents\Visual Studio 2015\Projects\Joyce\Connection\obj\Debug\Connection.pdb
+C:\Users\Soporte\Documents\Visual Studio 2015\Projects\Joyce\Connection\obj\Debug\Connection.csprojResolveAssemblyReference.cache
+C:\Users\Diego\Documents\Visual Studio 2015\Projects\LaMorisca\DBmanager\DBmanager-master\bin\Debug\Connection.dll
+C:\Users\Diego\Documents\Visual Studio 2015\Projects\LaMorisca\DBmanager\DBmanager-master\bin\Debug\Connection.pdb
+C:\Users\Diego\Documents\Visual Studio 2015\Projects\LaMorisca\DBmanager\DBmanager-master\obj\Debug\Connection.csprojResolveAssemblyReference.cache
+C:\Users\Diego\Documents\Visual Studio 2015\Projects\LaMorisca\DBmanager\DBmanager-master\obj\Debug\Connection.dll
+C:\Users\Diego\Documents\Visual Studio 2015\Projects\LaMorisca\DBmanager\DBmanager-master\obj\Debug\Connection.pdb

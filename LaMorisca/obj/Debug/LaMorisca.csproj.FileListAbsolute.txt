@@ -8,16 +8,12 @@ C:\Users\Diego\Documents\Visual Studio 2015\Projects\LaMorisca\LaMorisca\obj\Deb
 C:\Users\Diego\Documents\Visual Studio 2015\Projects\LaMorisca\LaMorisca\obj\Debug\LaMorisca.Agregar_venta.resources
 C:\Users\Diego\Documents\Visual Studio 2015\Projects\LaMorisca\LaMorisca\obj\Debug\LaMorisca.FormAgregarCliente.resources
 C:\Users\Diego\Documents\Visual Studio 2015\Projects\LaMorisca\LaMorisca\obj\Debug\LaMorisca.FormBuscarCliente.resources
-C:\Users\Diego\Documents\Visual Studio 2015\Projects\LaMorisca\LaMorisca\obj\Debug\LaMorisca.FormBuscarDevolucion.resources
 C:\Users\Diego\Documents\Visual Studio 2015\Projects\LaMorisca\LaMorisca\obj\Debug\LaMorisca.FormBuscarEmpleado.resources
-C:\Users\Diego\Documents\Visual Studio 2015\Projects\LaMorisca\LaMorisca\obj\Debug\LaMorisca.FormBuscarMovimiento.resources
 C:\Users\Diego\Documents\Visual Studio 2015\Projects\LaMorisca\LaMorisca\obj\Debug\LaMorisca.FormBuscarPedido.resources
 C:\Users\Diego\Documents\Visual Studio 2015\Projects\LaMorisca\LaMorisca\obj\Debug\LaMorisca.FormBuscarProducto.resources
 C:\Users\Diego\Documents\Visual Studio 2015\Projects\LaMorisca\LaMorisca\obj\Debug\LaMorisca.FormBuscarProveedor.resources
 C:\Users\Diego\Documents\Visual Studio 2015\Projects\LaMorisca\LaMorisca\obj\Debug\LaMorisca.FormBuscarSucursal.resources
 C:\Users\Diego\Documents\Visual Studio 2015\Projects\LaMorisca\LaMorisca\obj\Debug\LaMorisca.FormBuscarVenta.resources
-C:\Users\Diego\Documents\Visual Studio 2015\Projects\LaMorisca\LaMorisca\obj\Debug\LaMorisca.FormDevolucion.resources
-C:\Users\Diego\Documents\Visual Studio 2015\Projects\LaMorisca\LaMorisca\obj\Debug\LaMorisca.FormMovimientoInventario.resources
 C:\Users\Diego\Documents\Visual Studio 2015\Projects\LaMorisca\LaMorisca\obj\Debug\LaMorisca.FrmPrincipal.resources
 C:\Users\Diego\Documents\Visual Studio 2015\Projects\LaMorisca\LaMorisca\obj\Debug\LaMorisca.FormAgregarProducto.resources
 C:\Users\Diego\Documents\Visual Studio 2015\Projects\LaMorisca\LaMorisca\obj\Debug\LaMorisca.FormAgregarSucursal.resources
@@ -28,3 +24,5 @@ C:\Users\Diego\Documents\Visual Studio 2015\Projects\LaMorisca\LaMorisca\obj\Deb
 C:\Users\Diego\Documents\Visual Studio 2015\Projects\LaMorisca\LaMorisca\obj\Debug\LaMorisca.exe
 C:\Users\Diego\Documents\Visual Studio 2015\Projects\LaMorisca\LaMorisca\obj\Debug\LaMorisca.pdb
 C:\Users\Diego\Documents\Visual Studio 2015\Projects\LaMorisca\LaMorisca\obj\Debug\LaMorisca.Formexistencias.resources
+C:\Users\Diego\Documents\Visual Studio 2015\Projects\LaMorisca\LaMorisca\bin\Debug\Connection.dll
+C:\Users\Diego\Documents\Visual Studio 2015\Projects\LaMorisca\LaMorisca\bin\Debug\Connection.pdb

@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using Connection;
 namespace LaMorisca
 {
     public partial class Agregar_Pedido : Form
@@ -18,9 +18,11 @@ namespace LaMorisca
         DataTable datos = new DataTable();
         DataGridViewButtonColumn btn = new DataGridViewButtonColumn();
         static string sucur;
+        QueryBuilder builder;
         public Agregar_Pedido()
         {
             InitializeComponent();
+            builder = new QueryBuilder(Program.conexion);
         }
         
         private void Agregar_Pedido_Load(object sender, EventArgs e)
@@ -29,24 +31,16 @@ namespace LaMorisca
             int sigue;
             try
             {
-                IDbConnection conexion = new SqlConnection(Program.conexion);
-                conexion.Open();
-                IDbCommand dbcmd = conexion.CreateCommand();
-                dbcmd.CommandText = "SELECT folio FROM PEDIDO order by folio desc   1";
-                IDataReader reader = dbcmd.ExecuteReader();
-                if (reader.Read())
+                string next = builder.getField("PEDIDO", "folio", "order by folio desc");
+                if (next!=null)
                 {
-                    string len = string.Empty;
-                    int i = 0;
-                    sigue = Convert.ToInt32(reader.GetInt32(reader.GetOrdinal("folio")));
+                    sigue = Convert.ToInt32(next);
                     sigue++;
                     txtfolio.Text = sigue.ToString();
-                    conexion.Close();
                 }
                 else
-                {
                     txtfolio.Text = "1";
-                }
+                
 
             }
             catch (Exception msg)
@@ -81,19 +75,15 @@ namespace LaMorisca
         {
             try
             {
-                IDbConnection conexion = new SqlConnection(Program.conexion);
-                conexion.Open();
-                IDbCommand dbcmd = conexion.CreateCommand();
-                dbcmd.CommandText = "SELECT idsucursal from sucursal;";
-
-                IDataReader read = dbcmd.ExecuteReader();
-                while (read.Read())
+                if (builder.getField("Producto", "idproducto", "where idproducto=" + idprod) != null)
                 {
-                    dbcmd = conexion.CreateCommand();
-                    dbcmd.CommandText = "Insert into existencia VALUES(0 ,'" + read.GetString(read.GetOrdinal("idsucursal")) + "','" + idprod + "');";
-                    dbcmd.ExecuteNonQuery();
-                }
 
+                    IDataReader read = builder.returnReader("Sucursal", null, "id");
+                    while (read.Read())
+                    {
+                        builder.insertFields("existencia", new string[] { "0", read.GetOrdinal("idsucursal").ToString(), idprod });
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -112,15 +102,15 @@ namespace LaMorisca
             {
                 try
                 {
-                    
-                    conexion.Open();
-                    IDbCommand comando = conexion.CreateCommand();
-                    comando.CommandText =
-                        "INSERT INTO PEDIDO VALUES(" + txtfolio.Text + "," +
-                        "'" + txtfecha.Text + "', " +
-                    "'" + txtProveedor.Text + "' ," +
-                    "'" + txtSucursal.Text + "');";
-                    comando.ExecuteReader();
+
+                    builder.insertFields("PEDIDO", new string[]
+                        {
+                            txtfolio.Text,
+                            "'" + txtfecha.Text + "'",
+                            "'" + txtProveedor.Text + "'",
+                            "'" + txtSucursal.Text + "'"
+                        }
+                        );
                     
                     int contador = 0, existnew;
 
@@ -130,7 +120,6 @@ namespace LaMorisca
                         string idproduct = dtaGrid.Rows[contador].Cells[0].Value.ToString();
                         if(!Tools.FirstExistenceUpdate(txtSucursal.Text, idproduct, Program.conexion))
                             insertExistences(idproduct);
-                        Program.retornarError(idproduct, "");
                         existnew =Convert.ToInt32(dtaGrid.Rows[contador].Cells[3].Value);
                         string queryUp ="update existencia set cantidad=cantidad + " + existnew +
                             " where producto = '" + idproduct + "' AND SUCURSAL = '"+ txtSucursal.Text+ "';";

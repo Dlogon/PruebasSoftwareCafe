@@ -7,14 +7,18 @@ using System.Data;
 using System.Windows.Forms;
 using Mono;
 using Herramientas;
+using Connection;
+using System.Text.RegularExpressions;
 
 namespace LaMorisca
 {
     public partial class FormAgregarSucursal : Form
     {
+        QueryBuilder builder;
         public FormAgregarSucursal()
         {
             InitializeComponent();
+            builder = new QueryBuilder(Program.conexion);
         }
 
         internal bool checkemptys()
@@ -39,49 +43,22 @@ namespace LaMorisca
             string sigue;
             try
             {
-                IDbConnection conexion = new SqlConnection
-                        (Program.conexion);
-                conexion.Open();
-                IDbCommand dbcmd = conexion.CreateCommand();
-                dbcmd.CommandText = "SELECT idsucursal FROM SUCURSAL WHERE idsucursal LIKE '"+ selected +"%' order by idsucursal desc";
-                IDataReader reader = dbcmd.ExecuteReader();
-                if (reader.Read())
+                string lastSuc=builder.getField("SUCURSAL", "idsucursal", "WHERE idsucursal LIKE '" + selected + "%' order by idsucursal desc");
+               
+                if (lastSuc!=null)
                 {
-                    string len= string.Empty;
-                    int i = 0;
-                    sigue = Convert.ToString(reader.GetString(reader.GetOrdinal("idsucursal")));
-                    int next = Convert.ToInt32(sigue.Substring(2));
-                    next++;
-                    
-                    len += selected;
-                    while (i < ((next.ToString().Length - 6)*-1))
-                    {
-                        len += '0';
-                        i++;
-                    }
-                    len += next.ToString();
+                    string idsuc = Regex.Match(lastSuc, @"\d+").Value;
+                    int lastid = Convert.ToInt32(idsuc);
+                    lastid++;
+                    string len = selected + Convert.ToString(lastid);
                     txtIdGen.Text = len;
-                    conexion.Close();
-                    reader.Close();
                 }
                 else
                 {
-                    string len = string.Empty;
-                    int i = 0;
-                    len += selected;
-                    while (i < 5)
-                    {
-                        len += '0';
-                        i++;
-                    }
-                    len += "1";
+                    string len = selected + '1';
                     txtIdGen.Text = len;
                 }
 
-            }
-            catch(NpgsqlException ex)
-            {
-                MessageBox.Show(ex.Message+ex.Where+ex.Detail+"XXX");
             }
             catch (Exception msg)
             {
@@ -101,26 +78,26 @@ namespace LaMorisca
             {
                 try
                 {
-                    IDbConnection conexion = new SqlConnection
-                        (Program.conexion);
-                    conexion.Open();
-                    IDbCommand comando = conexion.CreateCommand();
-                    comando.CommandText =
-                        "INSERT INTO SUCURSAL VALUES('" + txtIdGen.Text + "'," +
-                        "'" + txtDireccion.Text + "', " +
-                        "'" + txtCiudad.Text + "', " +
-                        "'" + txtEstado.Text + "', " +
-                        "'" + txtTelefono.Text + "'); ";
-                    IDataReader ejecutor = comando.ExecuteReader();
-                    comando.CommandText = "select distinct producto from existencia";
-                    ejecutor = comando.ExecuteReader();
+                    builder.insertFields("SUCURSAL", new string[]
+                        {
+                            "'" + txtIdGen.Text + "'",
+                            "'" + txtDireccion.Text + "'",
+                            "'" + txtCiudad.Text + "'",
+                            "'" + txtEstado.Text + "'",
+                            "'" + txtTelefono.Text + "'"
+                        }
+                        );
+                    IDataReader ejecutor = builder.returnReader(" existencia ", null, "distinct producto");
                     while(ejecutor.Read())
                     {
-                        comando.CommandText = "insert into existencia values(0, '" + txtIdGen.Text + "', " + ejecutor.GetString(ejecutor.GetOrdinal("producto")) + ");";
-                        comando.ExecuteNonQuery();
+                        builder.insertFields("existencia", new string[]
+                            {
+                                "0",
+                                "'" + txtIdGen.Text + "'",
+                                ejecutor.GetString(ejecutor.GetOrdinal("producto"))
+                            }
+                            );
                     }
-                    conexion.Close();
-
                     MessageBox.Show("Sucursal Guardada correctamente ");
                     Tools.setBoxemptys(Controls);
 

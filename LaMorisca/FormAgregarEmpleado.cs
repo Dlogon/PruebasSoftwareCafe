@@ -57,7 +57,6 @@ namespace LaMorisca
                     MessageBox.Show("Registro Guardado correctamente...");
                     copyfiles();
                     Tools.setBoxemptys(Controls);
-                    pcFoto.Image = null;
                     nombreFoto = "";
 
                 }
@@ -154,7 +153,6 @@ namespace LaMorisca
                 nombreFoto = BuscarImagen.SafeFileName;
                 completeroute = BuscarImagen.FileName;
                 String Direccion = BuscarImagen.FileName;
-                pcFoto.ImageLocation = Direccion;
             }
         }
 

@@ -3,7 +3,7 @@ using Npgsql;
 using System.Data;
 using System.Data.SqlClient;
 using System.Windows.Forms;
-
+using Connection;
 namespace Herramientas
 {
     public static class Tools
@@ -16,18 +16,17 @@ namespace Herramientas
 
         public static void FillCombos(ComboBox txtCombo, string con, string id, string tabla)
         {
-            
-            IDbConnection conexion = new SqlConnection(con);
+
+            QueryBuilder builder = new QueryBuilder(con);
             try
             {
-                
-                conexion.Open();
-                IDbCommand dbcmd = conexion.CreateCommand();
-                dbcmd.CommandText = "SELECT "+id+" FROM "+tabla;
-                IDataReader reader = dbcmd.ExecuteReader();
-                while (reader.Read())
+                IDataReader reader = builder.returnReader(tabla, null, id);
+                if (reader != null)
                 {
-                    txtCombo.Items.Add(reader.GetString(reader.GetOrdinal(id)));
+                    while (reader.Read())
+                    {
+                        txtCombo.Items.Add(reader.GetString(reader.GetOrdinal(id)));
+                    }
                 }
             }
             catch (Exception ex)
@@ -36,7 +35,7 @@ namespace Herramientas
             }
             finally
             {
-                conexion.Close();
+                
             }
         }
 

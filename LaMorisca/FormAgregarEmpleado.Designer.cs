@@ -44,10 +44,7 @@
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.txtIDGenerado = new System.Windows.Forms.TextBox();
-            this.pcFoto = new System.Windows.Forms.PictureBox();
-            this.btnCargar = new System.Windows.Forms.Button();
             this.txtIdSucursal = new System.Windows.Forms.ComboBox();
-            ((System.ComponentModel.ISupportInitialize)(this.pcFoto)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -198,25 +195,6 @@
             this.txtIDGenerado.Size = new System.Drawing.Size(119, 20);
             this.txtIDGenerado.TabIndex = 15;
             // 
-            // pcFoto
-            // 
-            this.pcFoto.Location = new System.Drawing.Point(340, 26);
-            this.pcFoto.Name = "pcFoto";
-            this.pcFoto.Size = new System.Drawing.Size(136, 134);
-            this.pcFoto.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pcFoto.TabIndex = 16;
-            this.pcFoto.TabStop = false;
-            // 
-            // btnCargar
-            // 
-            this.btnCargar.Location = new System.Drawing.Point(482, 78);
-            this.btnCargar.Name = "btnCargar";
-            this.btnCargar.Size = new System.Drawing.Size(99, 45);
-            this.btnCargar.TabIndex = 17;
-            this.btnCargar.Text = "Cargar \r\nImagen";
-            this.btnCargar.UseVisualStyleBackColor = true;
-            this.btnCargar.Click += new System.EventHandler(this.btnCargar_Click);
-            // 
             // txtIdSucursal
             // 
             this.txtIdSucursal.FormattingEnabled = true;
@@ -233,8 +211,6 @@
             this.ClientSize = new System.Drawing.Size(593, 310);
             this.ControlBox = false;
             this.Controls.Add(this.txtIdSucursal);
-            this.Controls.Add(this.btnCargar);
-            this.Controls.Add(this.pcFoto);
             this.Controls.Add(this.txtIDGenerado);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
@@ -254,7 +230,6 @@
             this.Name = "FormAgregarEmpleado";
             this.Text = "Agregar Empleado";
             this.Load += new System.EventHandler(this.FormAgregarEmpleado_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.pcFoto)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -278,8 +253,6 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox txtIDGenerado;
-        private System.Windows.Forms.PictureBox pcFoto;
-        private System.Windows.Forms.Button btnCargar;
         private System.Windows.Forms.ComboBox txtIdSucursal;
     }
 }

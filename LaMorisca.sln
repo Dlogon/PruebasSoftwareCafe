@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LaMorisca", "LaMorisca\LaMo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Herramientas", "Herramientas\Herramientas.csproj", "{7F498769-F60E-46CA-B26C-D052AD906357}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Connection", "DBmanager\DBmanager-master\Connection.csproj", "{F681DED1-D760-4C69-8D2E-EC6D9CF2C7CC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{7F498769-F60E-46CA-B26C-D052AD906357}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7F498769-F60E-46CA-B26C-D052AD906357}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7F498769-F60E-46CA-B26C-D052AD906357}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F681DED1-D760-4C69-8D2E-EC6D9CF2C7CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F681DED1-D760-4C69-8D2E-EC6D9CF2C7CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F681DED1-D760-4C69-8D2E-EC6D9CF2C7CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F681DED1-D760-4C69-8D2E-EC6D9CF2C7CC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

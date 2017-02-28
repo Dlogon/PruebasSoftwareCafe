@@ -76,23 +76,11 @@
     <Compile Include="FormBuscarCliente.Designer.cs">
       <DependentUpon>FormBuscarCliente.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormBuscarDevolucion.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormBuscarDevolucion.Designer.cs">
-      <DependentUpon>FormBuscarDevolucion.cs</DependentUpon>
-    </Compile>
     <Compile Include="FormBuscarEmpleado.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FormBuscarEmpleado.Designer.cs">
       <DependentUpon>FormBuscarEmpleado.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FormBuscarMovimiento.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormBuscarMovimiento.Designer.cs">
-      <DependentUpon>FormBuscarMovimiento.cs</DependentUpon>
     </Compile>
     <Compile Include="FormBuscarPedido.cs">
       <SubType>Form</SubType>
@@ -124,23 +112,11 @@
     <Compile Include="FormBuscarVenta.Designer.cs">
       <DependentUpon>FormBuscarVenta.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormDevolucion.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormDevolucion.Designer.cs">
-      <DependentUpon>FormDevolucion.cs</DependentUpon>
-    </Compile>
     <Compile Include="Formexistencias.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Formexistencias.Designer.cs">
       <DependentUpon>Formexistencias.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FormMovimientoInventario.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormMovimientoInventario.Designer.cs">
-      <DependentUpon>FormMovimientoInventario.cs</DependentUpon>
     </Compile>
     <Compile Include="FrmPrincipal.cs">
       <SubType>Form</SubType>
@@ -186,14 +162,8 @@
     <EmbeddedResource Include="FormBuscarCliente.resx">
       <DependentUpon>FormBuscarCliente.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormBuscarDevolucion.resx">
-      <DependentUpon>FormBuscarDevolucion.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="FormBuscarEmpleado.resx">
       <DependentUpon>FormBuscarEmpleado.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FormBuscarMovimiento.resx">
-      <DependentUpon>FormBuscarMovimiento.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormBuscarPedido.resx">
       <DependentUpon>FormBuscarPedido.cs</DependentUpon>
@@ -210,14 +180,8 @@
     <EmbeddedResource Include="FormBuscarVenta.resx">
       <DependentUpon>FormBuscarVenta.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormDevolucion.resx">
-      <DependentUpon>FormDevolucion.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Formexistencias.resx">
       <DependentUpon>Formexistencias.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FormMovimientoInventario.resx">
-      <DependentUpon>FormMovimientoInventario.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmPrincipal.resx">
       <DependentUpon>FrmPrincipal.cs</DependentUpon>
@@ -257,6 +221,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DBmanager\DBmanager-master\Connection.csproj">
+      <Project>{f681ded1-d760-4c69-8d2e-ec6d9cf2c7cc}</Project>
+      <Name>Connection</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Herramientas\Herramientas.csproj">
       <Project>{7f498769-f60e-46ca-b26c-d052ad906357}</Project>
       <Name>Herramientas</Name>
