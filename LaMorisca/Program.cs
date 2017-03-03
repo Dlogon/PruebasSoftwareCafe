@@ -18,7 +18,6 @@ namespace LaMorisca
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            initDb();
             Application.Run(new FrmPrincipal());
         }
         public static string conexion = "Data Source=mssql5.gear.host; Initial Catalog=lamorisca;User ID=lamorisca;Password=Re7oyRiW!T_U	;";
@@ -28,14 +27,6 @@ namespace LaMorisca
             new FrmPrincipal().Show();
         }
 
-        private static void initDb()
-        {
-            Process proceso = new Process();
-            proceso.StartInfo = new ProcessStartInfo("initdb.bat");
-            proceso.StartInfo.WindowStyle =
-                ProcessWindowStyle.Minimized;
-            proceso.Start();
-        }
         internal static void retornarError(String Message, String Titulo)
         {
             MessageBox.Show(Message, Titulo, MessageBoxButtons.OK, MessageBoxIcon.Asterisk);

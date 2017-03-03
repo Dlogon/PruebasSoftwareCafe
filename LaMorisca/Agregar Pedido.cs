@@ -92,8 +92,6 @@ namespace LaMorisca
         }
         private void btnAgregar_Click(object sender, EventArgs e)
         {
-            SqlConnection conexion = new SqlConnection
-                        (Program.conexion);
             if (proveedorValida.Valid(txtProveedor.Text, Program.conexion)==null)
                 Program.retornarError("El proveedor no existe", "Proveedor no encontrado");
             else if(i==0)
@@ -116,29 +114,26 @@ namespace LaMorisca
 
                     while (i != contador)
                     {
-                        SqlCommand cmdUp;
                         string idproduct = dtaGrid.Rows[contador].Cells[0].Value.ToString();
                         if(!Tools.FirstExistenceUpdate(txtSucursal.Text, idproduct, Program.conexion))
                             insertExistences(idproduct);
                         existnew =Convert.ToInt32(dtaGrid.Rows[contador].Cells[3].Value);
                         string queryUp ="update existencia set cantidad=cantidad + " + existnew +
                             " where producto = '" + idproduct + "' AND SUCURSAL = '"+ txtSucursal.Text+ "';";
-                        
-                        cmdUp = new SqlCommand(queryUp, conexion);
-                        cmdUp.ExecuteNonQuery();
+                        builder.queryejecutor(queryUp);
                         string precio = dtaGrid.Rows[contador].Cells[4].Value.ToString();
-                        queryUp = "INSERT INTO PEDIDODETALLE VALUES(" +
-                            txtfolio.Text + ", " +
-                            "'" + idproduct + "', " +
-                            "" + dtaGrid.Rows[contador].Cells[3].Value + ", " +
-                                precio.Substring(0, precio.Length - 1) + ");";
-                        cmdUp = new SqlCommand(queryUp, conexion);
-                        cmdUp.ExecuteNonQuery();
+                        builder.insertFields("PEDIDODETALLE", new string[]
+                            {
+                                txtfolio.Text,
+                                "'" + idproduct + "'",
+                                "" + dtaGrid.Rows[contador].Cells[3].Value + "",
+                                precio.Substring(0, precio.Length - 1)
+                            }
+                            );
                         contador++;
                     }
                     MessageBox.Show("Pedido Guardado correctamente...");
                     Tools.setBoxemptys(Controls);
-                    conexion.Close();
                     dtaGrid.DataSource = null;
 
                 }
@@ -148,7 +143,6 @@ namespace LaMorisca
                 }
                 finally
                 {
-                    conexion.Close();
                 }
             }
 
@@ -167,12 +161,7 @@ namespace LaMorisca
             {
                 try
                 {
-                    IDbConnection conexion = new SqlConnection(Program.conexion);
-                    conexion.Open();
-                    IDbCommand dbcmd = conexion.CreateCommand();
-                    dbcmd.CommandText = "SELECT nombre from proveedor where idproveedor='" + txtProveedor.Text + "';";
-
-                    IDataReader read = dbcmd.ExecuteReader();
+                    IDataReader read = builder.returnReader("proveedor", "where idproveedor='" + txtProveedor.Text + "';", "nombre");
                     while (read.Read())
                     {
                         txtNombreProveedor.Text = read.GetString(read.GetOrdinal("nombre"));
@@ -202,12 +191,7 @@ namespace LaMorisca
                 {
                     try
                     {
-                        IDbConnection conexion = new SqlConnection
-                                (Program.conexion);
-                        conexion.Open();
-                        IDbCommand dbcmd = conexion.CreateCommand();
-                        dbcmd.CommandText = "SELECT * FROM PRODUCTO WHERE idproducto ='" + txtIDPROD.Text + "';";
-                        IDataReader reader = dbcmd.ExecuteReader();
+                        IDataReader reader = builder.returnReader("PRODUCTO", "WHERE idproducto = '" + txtIDPROD.Text + "'; ", " * ");
                         if (reader.Read())
                         {
                             if (reader.GetString(reader.GetOrdinal("proveedor")) != txtProveedor.Text)
@@ -219,10 +203,10 @@ namespace LaMorisca
                                 txtPrecio.Text = Convert.ToString(reader.GetDecimal(reader.GetOrdinal("preciolista")));
                             }
                         }
-                        else
+                       /* else
                         {
                             MessageBox.Show("El producto se a añadido, pero aún no hay pedidos del mismo, pida el producto a su proveedor para generar existencias");
-                        }
+                        }*/
 
                     }
                     catch (Exception msg)
@@ -309,12 +293,7 @@ namespace LaMorisca
                 {
                     try
                     {
-                        IDbConnection conexion = new SqlConnection(Program.conexion);
-                        conexion.Open();
-                        IDbCommand dbcmd = conexion.CreateCommand();
-                        dbcmd.CommandText = "SELECT direccion from SUCURSAL where idsucursal='" + txtSucursal.Text+ "';";
-
-                        IDataReader read = dbcmd.ExecuteReader();
+                        IDataReader read = builder.returnReader("SUCURSAL", "where idsucursal = '" + txtSucursal.Text + "'; ", "direccion");
                         while (read.Read())
                         {
                            txtDirSucursal.Text = read.GetString(read.GetOrdinal("direccion"));

@@ -10,7 +10,7 @@ namespace Herramientas
     {
         public static void WriteOnlyDigits(object sender, KeyPressEventArgs e)
         {
-            if (!(Char.IsDigit(e.KeyChar) || Char.IsControl(e.KeyChar)))
+            if (!(char.IsDigit(e.KeyChar) || char.IsControl(e.KeyChar)))
                 e.Handled = true;
         }
 
@@ -84,21 +84,24 @@ namespace Herramientas
                 IDbCommand dbcmd = conexion.CreateCommand();
                 dbcmd.CommandText = "SELECT folio FROM " +tabla+ " order by folio desc   1";
                 IDataReader reader = dbcmd.ExecuteReader();
-                if (reader.Read())
-                {
-                    string len = string.Empty;
-                    int i = 0;
-                    sigue = Convert.ToInt32(reader.GetInt32(reader.GetOrdinal("folio")));
-                    conexion.Close();
-                    sigue++;
-                    return sigue;
-                    
-                    
-                }
+                if (reader != null)
+                    if (reader.Read())
+                    {
+                        string len = string.Empty;
+                        int i = 0;
+                        sigue = Convert.ToInt32(reader.GetInt32(reader.GetOrdinal("folio")));
+                        conexion.Close();
+                        sigue++;
+                        return sigue;
+
+
+                    }
+                    else
+                    {
+                        return 1;
+                    }
                 else
-                {
-                    return 1;
-                }
+                    return -1;
 
             }
             catch (Exception msg)

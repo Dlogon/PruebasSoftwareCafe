@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SqlClient;
+using Connection;
 namespace LaMorisca
 {
     public partial class Agregar_venta : Form
@@ -17,6 +18,7 @@ namespace LaMorisca
         DataTable datos = new DataTable();
         DataGridViewButtonColumn btn = new DataGridViewButtonColumn();
         static string sucur;
+        QueryBuilder builder;
         public Agregar_venta()
         {
             InitializeComponent();
@@ -30,24 +32,15 @@ namespace LaMorisca
             int sigue;
             try
             {
-                IDbConnection conexion = new SqlConnection(Program.conexion);
-                conexion.Open();
-                IDbCommand dbcmd = conexion.CreateCommand();
-                dbcmd.CommandText = "SELECT folio FROM VENTA order by folio desc   1";
-                IDataReader reader = dbcmd.ExecuteReader();
-                if (reader.Read())
+                string next = builder.getField("VENTA", "folio", "order by folio desc");
+                if (next != null)
                 {
-                    string len = string.Empty;
-                    //int i = 0;
-                    sigue = Convert.ToInt32(reader.GetInt32(reader.GetOrdinal("folio")));
+                    sigue = Convert.ToInt32(next);
                     sigue++;
                     txtfolio.Text = sigue.ToString();
-                    conexion.Close();
                 }
                 else
-                {
                     txtfolio.Text = "1";
-                }
 
             }
             catch (Exception msg)

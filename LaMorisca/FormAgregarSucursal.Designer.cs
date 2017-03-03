@@ -56,9 +56,6 @@
             // cmbTipo
             // 
             this.cmbTipo.FormattingEnabled = true;
-            this.cmbTipo.Items.AddRange(new object[] {
-            "Bodega",
-            "Tienda"});
             this.cmbTipo.Location = new System.Drawing.Point(118, 6);
             this.cmbTipo.Name = "cmbTipo";
             this.cmbTipo.Size = new System.Drawing.Size(196, 21);
@@ -191,6 +188,7 @@
             this.Name = "FormAgregarSucursal";
             this.Text = "Agregar Sucursal";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormAgregarSucursal_FormClosed);
+            this.Load += new System.EventHandler(this.FormAgregarSucursal_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

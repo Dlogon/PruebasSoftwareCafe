@@ -27,13 +27,42 @@ namespace Connection
         /// <summary>
         /// Abre la conexion a la base de datos y prepara el query a ejecutar
         /// </summary>
-        private void openConnection()
+        private bool openConnection()
         {
-            conn = new SqlConnection(conString);
-            conn.Open();
-            command = new SqlCommand();
-            command = conn.CreateCommand();
-            command.CommandType = CommandType.Text;
+            try
+            {
+                conn = new SqlConnection(conString);
+                command = new SqlCommand();
+                command = conn.CreateCommand();
+                command.CommandType = CommandType.Text;
+                conn.Open();
+
+                return true;
+            }
+            catch(SqlException e)
+            {
+                if (e.Number == 53)
+                {
+                    MessageBox.Show("Parece que no estas conectado a internet, o la red se encuentra congestionada\n"+
+                         "Asegurate de tener una conexion a internet, si el problema persiste contacta a sistemas"
+                         , "ERROR "+e.Number,
+                         MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    MessageBox.Show("Error en la operacion, contacte a sistemas e informe el siguiente mensaje:\n" + e.Message, e.Number.ToString(),
+                         MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                return false;
+            }
+            catch(Exception e)
+            {
+                MessageBox.Show("Error en la operacion, contacte a sistemas e informe el siguiente mensaje:\n" +
+                    "\n Exception" + e.InnerException  +"\n"+ e.Message, "Error",
+                         MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+
         }
         /// <summary>
         /// Retorna un solo campo de una tabla, el primero que encuentre
@@ -47,12 +76,17 @@ namespace Connection
             
             try
             {
-                openConnection();
-                command.CommandText = "SELECT " + field + " FROM " + table + " "+ conditions;
-                if (command.ExecuteNonQuery() <= 0)
-                    return null;
+                if (openConnection())
+                {
+                    command.CommandText = "SELECT " + field + " FROM " + table + " " + conditions;
+                    string ob = Convert.ToString(command.ExecuteScalar());
+                    if (ob==null)
+                        return null;
+                    else
+                        return ob;
+                }
                 else
-                    return Convert.ToString(command.ExecuteScalar());
+                    throw new Exception();
             }
             catch(SqlException e)
             {
@@ -84,26 +118,31 @@ namespace Connection
         {
             try
             {
-                openConnection();
-                string campos = string.Join(" , ", fields);
-                command.CommandText = "SELECT " + campos + " FROM " + table + " " + conditions;
-                if (command.ExecuteNonQuery() <= 0)
-                    return null;
-                IDataReader reader = command.ExecuteReader();
-                int i=0, k=0;
-                Dictionary<string, string> ret = new Dictionary<string, string>();
-                while (reader.Read())
+                if (openConnection())
                 {
-                    i = 0;
-                    while (i < fields.Length)
+
+                    string campos = string.Join(" , ", fields);
+                    command.CommandText = "SELECT " + campos + " FROM " + table + " " + conditions;
+                    if (command.ExecuteNonQuery() <= 0)
+                        return null;
+                    IDataReader reader = command.ExecuteReader();
+                    int i = 0, k = 0;
+                    Dictionary<string, string> ret = new Dictionary<string, string>();
+                    while (reader.Read())
                     {
-                        ret.Add(fields[i].Trim()+k.ToString(), Convert.ToString(reader.GetValue(i)));
-                        i++;
+                        i = 0;
+                        while (i < fields.Length)
+                        {
+                            ret.Add(fields[i].Trim() + k.ToString(), Convert.ToString(reader.GetValue(i)));
+                            i++;
+                        }
+                        k++;
                     }
-                    k++;
+
+                    return ret;
                 }
-                
-                return ret;
+                else
+                    throw new Exception();
             }
             catch (SqlException e)
             {
@@ -123,24 +162,42 @@ namespace Connection
             }
         }
         
-        public IDataReader returnReader(string table, string conditions, params string[] fields)
+        public IDataReader returnReader(string table, string conditions, params string[] fields) 
         {
-            openConnection();
-            string campos = string.Join(" , ", fields);
-            command.CommandText = "SELECT " + campos + " FROM " + table + " " + conditions;
-            if (command.ExecuteNonQuery() <= 0)
-                return null;
-            return command.ExecuteReader();
+            if(openConnection())
+            {
+                string campos = string.Join(" , ", fields);
+                command.CommandText = "SELECT " + campos + " FROM " + table + " " + conditions;
+                SqlDataReader reader= command.ExecuteReader();
+                if (!reader.HasRows)
+                    return null;
+                return reader;
+            }
+            return null;
         }
 
         public bool insertFields(string table, params string[] fields)
         {
-            openConnection();
-            string campos = string.Join(" , ", fields);
-            command.CommandText = "INSERT INTO "+ table + " VALUES ( " + campos + " )";
-            if (command.ExecuteNonQuery() <= 0)
-                return false;
-            return true;
+            if (openConnection())
+            {
+                string campos = string.Join(" , ", fields);
+                command.CommandText = "INSERT INTO " + table + " VALUES ( " + campos + " )";
+                if (command.ExecuteNonQuery() <= 0)
+                    return false;
+                return true;
+            }
+            return false;
+        }
+
+        public int queryejecutor(string query)
+        {
+            if (openConnection())
+            {
+                command.CommandText = query;
+                return command.ExecuteNonQuery();
+            }
+            return -1;
+            
         }
     }
 }
