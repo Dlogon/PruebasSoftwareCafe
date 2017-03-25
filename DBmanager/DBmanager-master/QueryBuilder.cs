@@ -79,8 +79,9 @@ namespace Connection
                 if (openConnection())
                 {
                     command.CommandText = "SELECT " + field + " FROM " + table + " " + conditions;
+                    command.Parameters.Add(new SqlParameter("@" + field, field));
                     string ob = Convert.ToString(command.ExecuteScalar());
-                    if (ob==null)
+                    if (ob=="")
                         return null;
                     else
                         return ob;
@@ -180,15 +181,20 @@ namespace Connection
         {
             if (openConnection())
             {
-                string campos = string.Join(" , ", fields);
+                string[] parameters = new string[fields.Length];
+                for (int i = 0; i < fields.Length; i++)
+                    parameters[i] = "@param" + i;
+                string campos = string.Join(" , ", parameters);
                 command.CommandText = "INSERT INTO " + table + " VALUES ( " + campos + " )";
+                for (int i = 0; i < fields.Length; i++)
+                    command.Parameters.Add(new SqlParameter("@param"+i,fields[i]));
                 if (command.ExecuteNonQuery() <= 0)
                     return false;
                 return true;
             }
             return false;
         }
-
+        [Obsolete("Metodo inseguro, puede permitir inyeccion de codigo!.")]
         public int queryejecutor(string query)
         {
             if (openConnection())

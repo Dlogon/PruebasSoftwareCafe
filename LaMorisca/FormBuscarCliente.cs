@@ -10,16 +10,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using Connection;
 namespace LaMorisca
 {
     public partial class FormBuscarCliente : Form
     {
+        
         public FormBuscarCliente()
         {
             InitializeComponent();
         }
-
+        //private QueryBuilder;
         private void btnAgregar_Click(object sender, EventArgs e)
         {
             bool encontro = false;

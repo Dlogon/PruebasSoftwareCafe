@@ -11,11 +11,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using Connection;
 namespace LaMorisca
 {
     public partial class FormBuscarVenta : Form
     {
+        QueryBuilder builder;
         public FormBuscarVenta()
         {
             InitializeComponent();

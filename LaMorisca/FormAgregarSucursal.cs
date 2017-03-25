@@ -14,7 +14,7 @@ namespace LaMorisca
 {
     public partial class FormAgregarSucursal : Form
     {
-        QueryBuilder builder;
+        private QueryBuilder builder;
         public FormAgregarSucursal()
         {
             InitializeComponent();

@@ -18,7 +18,7 @@ namespace LaMorisca
         DataTable datos = new DataTable();
         DataGridViewButtonColumn btn = new DataGridViewButtonColumn();
         static string sucur;
-        QueryBuilder builder;
+        private QueryBuilder builder;
         public Agregar_Pedido()
         {
             InitializeComponent();
@@ -170,6 +170,7 @@ namespace LaMorisca
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message);
+                    Program.regresar(this);
                 }
             }
         }

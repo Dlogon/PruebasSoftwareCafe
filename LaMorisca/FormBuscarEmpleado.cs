@@ -10,11 +10,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using Connection;
 namespace LaMorisca
 {
     public partial class FormBuscarEmpleado : Form
     {
+        private QueryBuilder builder;
         public FormBuscarEmpleado()
         {
             InitializeComponent();

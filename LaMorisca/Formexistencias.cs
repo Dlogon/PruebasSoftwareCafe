@@ -1,4 +1,5 @@
-﻿using Npgsql;
+﻿using Connection;
+using Npgsql;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,6 +14,7 @@ namespace LaMorisca
 {
     public partial class Formexistencias : Form
     {
+        QueryBuilder builder;
         public string producto { get; set; }
         public Formexistencias(string pro)
         {

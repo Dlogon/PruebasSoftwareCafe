@@ -5,72 +5,35 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.Windows.Forms;
-
+using Connection;
 namespace LaMorisca
 {
     public partial class FormAgregarCliente : Form
     {
+        private QueryBuilder builder;
         public FormAgregarCliente()
         {
             InitializeComponent();
+            builder = new QueryBuilder(Program.conexion);
         }
-        internal bool checkemptys()
-        {
-            foreach (Control c in Controls)
-            {
-                if (c is TextBox)
-                {
-                    TextBox textBox = c as TextBox;
-                    if (textBox.Text == string.Empty)
-                    {
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
-
+      
         private void FormAgregarCliente_Load(object sender, EventArgs e)
         {
             string tipe = "CLI";
-            string sigue;
             try
             {
-                IDbConnection conexion = new SqlConnection(Program.conexion);
-                conexion.Open();
-                IDbCommand dbcmd = conexion.CreateCommand();
-                dbcmd.CommandText = "SELECT idcliente FROM Cliente order by idcliente desc";
-                IDataReader reader = dbcmd.ExecuteReader();
-                if (reader.Read())
-                {
-                    string len = string.Empty;
-                    int i = 0;
-                    sigue = Convert.ToString(reader.GetString(reader.GetOrdinal("idcliente")));
-                    int next = Convert.ToInt32(sigue.Substring(3));
-                    next++;
+                string ultimo=builder.getField("Cliente", "idcliente", "order by idcliente desc");
 
-                    len += tipe;
-                    while (i < ((next.ToString().Length - 5) * -1))
-                    {
-                        len += '0';
-                        i++;
-                    }
-                    len += next.ToString();
-                    txtIDGen.Text = len;
-                    conexion.Close();
+                if (ultimo==null)
+                {
+                    txtIDGen.Text = tipe + "1";
                 }
                 else
                 {
-                    string len = string.Empty;
-                    int i = 0;
-                    len += tipe;
-                    while (i < 4)
-                    {
-                        len += '0';
-                        i++;
-                    }
-                    len += "1";
-                    txtIDGen.Text = len;
+                    MessageBox.Show(ultimo);
+                    int ls = Convert.ToInt32(ultimo.Substring(3,ultimo.Length-3));
+                    ls++;
+                    txtIDGen.Text = tipe+ls;
                 }
 
             }
@@ -92,17 +55,13 @@ namespace LaMorisca
             {
                 try
                 {
-                    IDbConnection conexion = new SqlConnection(Program.conexion);
-                    conexion.Open();
-                    IDbCommand comando = conexion.CreateCommand();
-                    comando.CommandText =
-                        "INSERT INTO CLIENTE VALUES('" + txtIDGen.Text + "'," +
-                        "'" + txtNombre.Text + "', " +
-                        "'" + txtDireccion.Text + "', " +
-                        "'" + txtTelefono.Text + "', " +
-                        "0);";
-                    IDataReader ejecutor = comando.ExecuteReader();
-                    conexion.Close();
+                    builder.insertFields("CLIENTE",
+                        txtIDGen.Text,
+                        txtNombre.Text,
+                        txtDireccion.Text,
+                        txtTelefono.Text
+                        ,"0","0"
+                        );
 
                     MessageBox.Show("Registro Guardado correctamente...");
                     Tools.setBoxemptys(Controls);

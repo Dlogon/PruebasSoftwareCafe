@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SqlClient;
-
+using Connection;
 namespace LaMorisca
 {
     public partial class FormAgregarEmpleado : Form
@@ -18,6 +18,7 @@ namespace LaMorisca
         public string nombreFoto="";
         public string completeroute;
         private string dest = Application.StartupPath + "\\Fotos\\";
+        private QueryBuilder builder;
         public FormAgregarEmpleado()
         {
             InitializeComponent();

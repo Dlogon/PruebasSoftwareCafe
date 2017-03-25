@@ -18,7 +18,7 @@ namespace LaMorisca
         DataTable datos = new DataTable();
         DataGridViewButtonColumn btn = new DataGridViewButtonColumn();
         static string sucur;
-        QueryBuilder builder;
+        private QueryBuilder builder;
         public Agregar_venta()
         {
             InitializeComponent();

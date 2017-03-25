@@ -11,12 +11,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using Connection;
 namespace LaMorisca
 {
     public partial class FormBuscarPedido : Form
     {
         System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmPrincipal));
+        private QueryBuilder builder;
         public FormBuscarPedido()
         {
             InitializeComponent();
