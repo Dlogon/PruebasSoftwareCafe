@@ -120,7 +120,12 @@ namespace LaMorisca
                         existnew =Convert.ToInt32(dtaGrid.Rows[contador].Cells[3].Value);
                         string queryUp ="update existencia set cantidad=cantidad + " + existnew +
                             " where producto = '" + idproduct + "' AND SUCURSAL = '"+ txtSucursal.Text+ "';";
-                        builder.queryejecutor(queryUp);
+                        builder.updateTable(
+                            "EXISTENCIA",
+                            " where producto = '" + idproduct + "' AND SUCURSAL = '" + txtSucursal.Text + "'",
+                            new string[] { "CANTIDAD" },
+                            " cantidad +" + existnew 
+                            );
                         string precio = dtaGrid.Rows[contador].Cells[4].Value.ToString();
                         builder.insertFields("PEDIDODETALLE", new string[]
                             {

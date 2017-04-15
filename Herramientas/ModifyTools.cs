@@ -1,5 +1,4 @@
-﻿using Npgsql;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -7,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SqlClient;
+using Connection;
 namespace Herramientas
 {
     public static class ModifyTools
@@ -190,6 +190,20 @@ namespace Herramientas
 
     public static class DeleteParameters
     {
+        public static bool LogicDelete(QueryBuilder builder, string primaryKey, string primaryKeyName,  string table, string nameOfLogicBool)
+        {
+            try
+            {
+                return builder.updateTable(table, "WHERE " + primaryKeyName + "=" + primaryKey, 
+                    new string[] { nameOfLogicBool }, "1");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return false;
+            }
+        }
+        [Obsolete("Se implementa borrado logico")]
         public static string DeletewhitString(string con, string table, string column, string tipe, string id)
         {
             try

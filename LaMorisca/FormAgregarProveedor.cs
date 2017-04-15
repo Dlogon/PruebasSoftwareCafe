@@ -1,14 +1,5 @@
 ﻿using Herramientas;
-using Npgsql;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Data.SqlClient;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Connection;
 namespace LaMorisca
@@ -19,6 +10,7 @@ namespace LaMorisca
         public FormAgregarProveedor()
         {
             InitializeComponent();
+            builder = new QueryBuilder(Program.conexion);
         }
 
         private void btnAgregar_Click(object sender, EventArgs e)
@@ -32,20 +24,18 @@ namespace LaMorisca
             {
                 try
                 {
-                    IDbConnection conexion = new SqlConnection(Program.conexion);
-                    conexion.Open();
-                    IDbCommand comando = conexion.CreateCommand();
-                    comando.CommandText =
-                        "INSERT INTO PROVEEDOR VALUES('" +txtIdGen.Text + "'," +
-                        "'" + TxtProveedor.Text + "', " +
-                        "'" + txtCiudad.Text + "', " +
-                        "'" + txtEstado.Text + "', " +
-                        "'" + txtTelefono.Text + "', " +
-                        "'" + txtDireccion.Text + "', " +
-                        "" + numericDias1.Value + " , 0 ); ";
-                    IDataReader ejecutor = comando.ExecuteReader();
-                    conexion.Close();
-
+                    builder.insertFields("PROVEEDOR", new string[]
+                    {
+                        "'" +txtIdGen.Text + "'",
+                        "'" + TxtProveedor.Text + "'",
+                        "'" + txtCiudad.Text + "'",
+                        "'" + txtEstado.Text + "'",
+                        "'" + txtTelefono.Text + "'",
+                        "'" + txtDireccion.Text + "'",
+                        (numericDias1.Value).ToString(),
+                        "0"
+                    }
+                    );
                     MessageBox.Show("Registro Guardado correctamente...");
                     Tools.setBoxemptys(Controls);
 
@@ -70,43 +60,19 @@ namespace LaMorisca
             string sigue;
             try
             {
-                IDbConnection conexion = new SqlConnection(Program.conexion);
-                conexion.Open();
-                IDbCommand dbcmd = conexion.CreateCommand();
-                dbcmd.CommandText = "SELECT idproveedor FROM PROVEEDOR order by idproveedor desc";
-                IDataReader reader = dbcmd.ExecuteReader();
-                if (reader.Read())
-                {
-                    string len = string.Empty;
-                    int i = 0;
-                    sigue = Convert.ToString(reader.GetString(reader.GetOrdinal("idproveedor")));
-                    int next = Convert.ToInt32(sigue.Substring(3));
-                    next++;
+                string ultimo = builder.getField("PROVEEDOR", "idproveedor", " order by idproveedor desc ");
 
-                    len += tipe;
-                    while (i < ((next.ToString().Length - 5) * -1))
-                    {
-                        len += '0';
-                        i++;
-                    }
-                    len += next.ToString();
-                    txtIdGen.Text = len;
-                    conexion.Close();
+                if (ultimo == null)
+                {
+                    txtIdGen.Text = tipe + "1";
                 }
                 else
                 {
-                    string len = string.Empty;
-                    int i = 0;
-                    len += tipe;
-                    while (i < 4)
-                    {
-                        len += '0';
-                        i++;
-                    }
-                    len += "1";
-                    txtIdGen.Text = len;
+                    MessageBox.Show(ultimo);
+                    int ls = Convert.ToInt32(ultimo.Substring(3, ultimo.Length - 3));
+                    ls++;
+                    txtIdGen.Text = tipe + ls;
                 }
-
             }
             catch (Exception msg)
             {

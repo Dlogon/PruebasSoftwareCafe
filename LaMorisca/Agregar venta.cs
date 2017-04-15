@@ -97,19 +97,14 @@ namespace LaMorisca
             {
                 try
                 {
-                    IDbConnection conexion = new SqlConnection
-                        (Program.conexion);
-                    conexion.Open();
-                    IDbCommand comando = conexion.CreateCommand();
-                    comando.CommandText =
-                        "INSERT INTO VENTA VALUES(" + txtfolio.Text + "," +
-                        "'No entregada',"+
-                        "'" +txtfecha.Text+ "',NULL ,"+
-                    "'" + txtIdEmpleado.Text + "',"+
-                    "'"+ txtIdCliente.Text +"');";
-                    IDataReader ejecutor = comando.ExecuteReader();
-                    conexion.Close();
-
+                    builder.insertFields("Venta", new string[] {
+                        txtfolio.Text,
+                        "'No entregada'",
+                        "'" + txtfecha.Text + "'", "NULL",
+                        "'" + txtIdEmpleado.Text + "'",
+                        txtIdCliente.Text,
+                        "'" + txtIdCliente.Text + "'"
+                    });
                     MessageBox.Show("Registro Guardado correctamente...");
                     Tools.setBoxemptys(Controls);
 
@@ -140,17 +135,8 @@ namespace LaMorisca
             else
             {
                 try
-                {
-                    IDbConnection conexion = new SqlConnection(Program.conexion);
-                    conexion.Open();
-                    IDbCommand dbcmd = conexion.CreateCommand();
-                    dbcmd.CommandText = "SELECT nombre from cliente where idcliente='" + txtIdCliente.Text + "';";
-
-                    IDataReader read = dbcmd.ExecuteReader();
-                    if(read.Read())
-                    {
-                       txtNombreCLiente.Text = read.GetString(read.GetOrdinal("nombre"));
-                    }
+                { 
+                    txtNombreCLiente.Text=builder.getField("Cliente", "NOMBRE", "where idcliente =" + "'" + txtIdCliente.Text + "'");
                 }
                 catch (Exception ex)
                 {
@@ -166,16 +152,8 @@ namespace LaMorisca
             {
                 try
                 {
-                    IDbConnection conexion = new SqlConnection(Program.conexion);
-                    conexion.Open();
-                    IDbCommand dbcmd = conexion.CreateCommand();
-                    dbcmd.CommandText = "SELECT nombre from empleado where idempleado='" + txtIdEmpleado.Text + "';";
-                    conexion.Close();
-                    IDataReader read = dbcmd.ExecuteReader();
-                    if (read.Read())
-                    {
-                       txtNombreEmpleado.Text = read.GetString(read.GetOrdinal("nombre"));
-                    }
+                    txtNombreEmpleado.Text =
+                        builder.getField("empleado", "NOMBRE", "where idempleado =" + "'" + txtIdEmpleado.Text + "'");
                 }
                 catch (Exception ex)
                 {

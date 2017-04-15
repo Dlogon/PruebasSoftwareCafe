@@ -205,6 +205,29 @@ namespace Connection
             return -1;
             
         }
+        public bool updateTable(string table, string conditions, string[] fieldsName, params string[] fields)
+        {
+            if (conditions == null)
+                return false;
+            if (fieldsName.Length != fields.Length)
+                return false;
+            if (openConnection())
+            {
+                string[] parameters = new string[fields.Length];
+                for (int i = 0; i < fields.Length; i++)
+                {
+                    parameters[i] = fieldsName[i] + " = @param" + i + "  ";
+                }
+                string campos = string.Join(" , ", parameters);
+                command.CommandText = "UPDATE " + table + "SET " + campos + "  " + conditions;
+                for (int i = 0; i < fields.Length; i++)
+                    command.Parameters.Add(new SqlParameter("@param" + i, fields[i]));
+                if (command.ExecuteNonQuery() <= 0)
+                    return false;
+                return true;
+            }
+            return false;
+        }
     }
 }
 

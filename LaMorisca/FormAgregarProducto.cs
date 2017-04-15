@@ -13,6 +13,7 @@ namespace LaMorisca
         public FormAgregarProducto()
         {
             InitializeComponent();
+            builder = new QueryBuilder(Program.conexion);
         }
 
         private void FormAgregarProducto_Load(object sender, EventArgs e)
@@ -49,8 +50,15 @@ namespace LaMorisca
                         "'" + txtProveedor.Text +"',"+
                         "" + numPreciolista.Value + "); ";
 
-                    comando.ExecuteReader();
-                    conexion.Close();
+                    builder.insertFields("PRODUCTO", new string[] {
+                        "'" + txtIProducto.Text + "'",
+                        (numPrecioPublic.Value).ToString(),
+                        "'" + txtDetalles.Text + "'",
+                        "'" + txtNombre.Text + "'",
+                        "'" + txtProveedor.Text +"'",
+                        (numPreciolista.Value).ToString()
+                    }
+                    );
                     MessageBox.Show("Registro Guardado correctamente...");
                     Tools.setBoxemptys(Controls);
 

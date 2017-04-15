@@ -15,23 +15,14 @@ namespace LaMorisca
 {
     public partial class FormAgregarEmpleado : Form
     {
-        public string nombreFoto="";
-        public string completeroute;
-        private string dest = Application.StartupPath + "\\Fotos\\";
         private QueryBuilder builder;
         public FormAgregarEmpleado()
         {
             InitializeComponent();
         }
-
-        private void copyfiles()
-        {
-            if (!(dest + nombreFoto == @completeroute))
-                System.IO.File.Copy(@completeroute, dest + nombreFoto, true);
-        }
         private void btnAgregar_Click(object sender, EventArgs e)
         {
-            if (Tools.checkBoxEmptys(this.Controls) || nombreFoto == "")
+            if (Tools.checkBoxEmptys(this.Controls))
                 MessageBox.Show("faltan campos");
             else if (SucursalValida.Valid(txtIdSucursal.Text, Program.conexion) == null)
                 MessageBox.Show("La Sucursal no existe!!");
@@ -39,26 +30,18 @@ namespace LaMorisca
             {
                 try
                 {
-                    IDbConnection conexion = new SqlConnection
-                        (Program.conexion);
-                    conexion.Open();
-                    IDbCommand comando = conexion.CreateCommand();
-                    comando.CommandText =
-                        "INSERT INTO EMPLEADO VALUES('" + txtIdSucursal.Text + "'," +
-                        "'" + txtIDGenerado.Text + "', " +
-                        "'" + txtNombreEmpleado.Text + "', " +
-                        "'" + txtApellidoEmpleado.Text + "', " +
-                        "'" + txtDireccion.Text + "', " +
-                        "'" + txtTelefono.Text + "' , 0, " +
-                        "'" + nombreFoto + "' ); ";
-
-                    IDataReader ejecutor = comando.ExecuteReader();
-                    conexion.Close();
+                    builder.insertFields(
+                        "empleado",
+                        txtIdSucursal.Text,
+                        txtIDGenerado.Text,
+                        txtNombreEmpleado.Text,
+                        txtApellidoEmpleado.Text,
+                        txtDireccion.Text,
+                        txtTelefono.Text, "0"
+                        );
 
                     MessageBox.Show("Registro Guardado correctamente...");
-                    copyfiles();
                     Tools.setBoxemptys(Controls);
-                    nombreFoto = "";
 
                 }
                 catch (Exception ex)
@@ -143,18 +126,7 @@ namespace LaMorisca
 
         private void btnCargar_Click(object sender, EventArgs e)
         {
-            OpenFileDialog BuscarImagen = new OpenFileDialog();
-            BuscarImagen.Filter = "Archivos de imagen(*.bmp, *.jpg, *.png)|*.bmp;*.jpg;*.png";
-            BuscarImagen.FileName = "";
-            BuscarImagen.Title = "Selecciona foto del empleado";
-            BuscarImagen.InitialDirectory =
-                Application.StartupPath + "\\Fotos\\";
-            if (BuscarImagen.ShowDialog() == DialogResult.OK)
-            {
-                nombreFoto = BuscarImagen.SafeFileName;
-                completeroute = BuscarImagen.FileName;
-                String Direccion = BuscarImagen.FileName;
-            }
+
         }
 
         private void txtTelefono_KeyPress(object sender, KeyPressEventArgs e)
