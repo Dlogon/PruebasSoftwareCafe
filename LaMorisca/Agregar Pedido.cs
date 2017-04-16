@@ -166,11 +166,7 @@ namespace LaMorisca
             {
                 try
                 {
-                    IDataReader read = builder.returnReader("proveedor", "where idproveedor='" + txtProveedor.Text + "';", "nombre");
-                    while (read.Read())
-                    {
-                        txtNombreProveedor.Text = read.GetString(read.GetOrdinal("nombre"));
-                    }
+                        txtNombreProveedor.Text = builder.getField("PROVEEDOR", "NOMBRE", "where idproveedor='" + txtProveedor.Text + "'") ;
                 }
                 catch (Exception ex)
                 {
@@ -299,11 +295,7 @@ namespace LaMorisca
                 {
                     try
                     {
-                        IDataReader read = builder.returnReader("SUCURSAL", "where idsucursal = '" + txtSucursal.Text + "'; ", "direccion");
-                        while (read.Read())
-                        {
-                           txtDirSucursal.Text = read.GetString(read.GetOrdinal("direccion"));
-                        }
+                        txtDirSucursal.Text = builder.getField("SUCURSAL", "direccion", "where idsucursal = '" + txtSucursal.Text + "'") ;
                     }
                     catch (Exception ex)
                     {

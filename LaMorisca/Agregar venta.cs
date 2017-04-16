@@ -267,16 +267,7 @@ namespace LaMorisca
                 {
                     try
                     {
-                        IDbConnection conexion = new SqlConnection(Program.conexion);
-                        conexion.Open();
-                        IDbCommand dbcmd = conexion.CreateCommand();
-                        dbcmd.CommandText = "SELECT direccion from SUCURSAL where idsucursal='" + txtSucursal.Text + "';";
-
-                        IDataReader read = dbcmd.ExecuteReader();
-                        if (read.Read())
-                        {
-                            txtDirSucursal.Text = read.GetString(read.GetOrdinal("direccion"));
-                        }
+                        txtDirSucursal.Text = builder.getField("SUCURSAL", "direccion", "where idsucursal = '" + txtSucursal.Text + "'");
                     }
                     catch (Exception ex)
                     {
@@ -290,16 +281,9 @@ namespace LaMorisca
         {
             try
             {
-                IDbConnection conexion = new SqlConnection(Program.conexion);
-                conexion.Open();
-                IDbCommand dbcmd = conexion.CreateCommand();
-                dbcmd.CommandText = "SELECT cantidad from existencia where sucursal='" + txtSucursal.Text + "' AND producto='"+product+"';";
-
-                IDataReader read = dbcmd.ExecuteReader();
-                conexion.Close();
-                if(read.Read())
-                   return read.GetInt32(read.GetOrdinal("cantidad"));
-                
+                return Convert.ToInt32(
+                    builder.getField("EXISTENCIA", "cantidad", "where sucursal = '" + txtSucursal.Text + "' AND producto = '"+product+"'")
+                    );
             }
             catch (Exception ex)
             {

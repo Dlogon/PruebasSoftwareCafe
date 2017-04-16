@@ -1,15 +1,6 @@
 ﻿using Herramientas;
-using Npgsql;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Data.SqlClient;
 using Connection;
 namespace LaMorisca
 {
@@ -19,6 +10,7 @@ namespace LaMorisca
         public FormAgregarEmpleado()
         {
             InitializeComponent();
+            builder = new QueryBuilder(Program.conexion);
         }
         private void btnAgregar_Click(object sender, EventArgs e)
         {
@@ -37,7 +29,7 @@ namespace LaMorisca
                         txtNombreEmpleado.Text,
                         txtApellidoEmpleado.Text,
                         txtDireccion.Text,
-                        txtTelefono.Text, "0"
+                        txtTelefono.Text, "0","0"
                         );
 
                     MessageBox.Show("Registro Guardado correctamente...");
@@ -76,44 +68,20 @@ namespace LaMorisca
         private void comboRol_SelectedIndexChanged(object sender, EventArgs e)
         {
             string selected = "E" + (char)comboRol.Text.ToCharArray().GetValue(0);
-            string sigue;
             try
             {
-                IDbConnection conexion = new SqlConnection(Program.conexion);
-                conexion.Open();
-                IDbCommand dbcmd = conexion.CreateCommand();
-                dbcmd.CommandText = "SELECT idempleado FROM EMPLEADO WHERE idempleado LIKE '" + selected + "%' order by idempleado desc     ";
-                IDataReader reader = dbcmd.ExecuteReader();
-                if (reader.Read())
-                {
-                    string len = string.Empty;
-                    int i = 0;
-                    sigue = Convert.ToString(reader.GetString(reader.GetOrdinal("idempleado")));
-                    int next = Convert.ToInt32(sigue.Substring(2));
-                    next++;
+                string ultimo = builder.getField("Empleado", "idempleado", " order by idempleado desc ");
 
-                    len += selected;
-                    while (i < ((next.ToString().Length - 5) * -1))
-                    {
-                        len += '0';
-                        i++;
-                    }
-                    len += next.ToString();
-                    txtIDGenerado.Text = len;
-                    conexion.Close();
+                if (ultimo == null)
+                {
+                    txtIDGenerado.Text = selected + "1";
                 }
                 else
                 {
-                    string len = string.Empty;
-                    int i = 0;
-                    len += selected;
-                    while (i < 4)
-                    {
-                        len += '0';
-                        i++;
-                    }
-                    len += "1";
-                    txtIDGenerado.Text = len;
+                    //MessageBox.Show(ultimo);
+                    int ls = Convert.ToInt32(ultimo.Substring(2, ultimo.Length - 2));
+                    ls++;
+                    txtIDGenerado.Text = selected + ls;
                 }
 
             }

@@ -48,7 +48,7 @@ namespace LaMorisca
                     " t on S.idtiposucursal = t.idtiposucursal where  t.idtiposucursal = "+tipo +
                     " order by idsucursal desc ");
                
-                if (lastSuc!="")
+                if (lastSuc!=null)
                 {
                     string idsuc = Regex.Match(lastSuc, @"\d+").Value;
                     int lastid = Convert.ToInt32(idsuc);
@@ -83,13 +83,13 @@ namespace LaMorisca
                 {
                     builder.insertFields("SUCURSAL", new string[]
                         {
-                            "'" + txtIdGen.Text + "'",
-                            "'" + txtDireccion.Text + "'",
-                            "'" + txtCiudad.Text + "'",
-                            "'" + txtEstado.Text + "'",
-                            "'" + txtTelefono.Text + "'",
-                            Convert.ToString(cmbTipo.SelectedIndex +1)
-
+                            "" + txtIdGen.Text + "",
+                            "" + txtDireccion.Text + "",
+                            "" + txtCiudad.Text + "",
+                            "" + txtEstado.Text + "",
+                            "" + txtTelefono.Text + "",
+                            Convert.ToString(cmbTipo.SelectedIndex +1),
+                            "0"
                         }
                         );
                     IDataReader ejecutor = builder.returnReader(" existencia ", null, "distinct producto");

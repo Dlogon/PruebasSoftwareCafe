@@ -39,23 +39,12 @@ namespace LaMorisca
             {
                 try
                 {
-                    IDbConnection conexion = new SqlConnection(Program.conexion);
-                    conexion.Open();
-                    IDbCommand comando = conexion.CreateCommand();
-                    comando.CommandText =
-                        "INSERT INTO PRODUCTO VALUES('" + txtIProducto.Text + "'," +
-                        "" +numPrecioPublic.Value + ", " +
-                        "'" + txtDetalles.Text + "', " +
-                        "'" + txtNombre.Text + "', " +
-                        "'" + txtProveedor.Text +"',"+
-                        "" + numPreciolista.Value + "); ";
-
                     builder.insertFields("PRODUCTO", new string[] {
-                        "'" + txtIProducto.Text + "'",
+                        "" + txtIProducto.Text + "",
                         (numPrecioPublic.Value).ToString(),
-                        "'" + txtDetalles.Text + "'",
-                        "'" + txtNombre.Text + "'",
-                        "'" + txtProveedor.Text +"'",
+                        "" + txtDetalles.Text + "",
+                        "" + txtNombre.Text + "",
+                        "" + txtProveedor.Text +"",
                         (numPreciolista.Value).ToString()
                     }
                     );

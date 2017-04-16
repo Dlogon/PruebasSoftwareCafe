@@ -21,6 +21,7 @@ namespace LaMorisca
         public FormBuscarPedido()
         {
             InitializeComponent();
+            builder = new QueryBuilder(Program.conexion);
         }
 
         private void btnCancelar_Click(object sender, EventArgs e)

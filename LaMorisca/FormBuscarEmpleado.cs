@@ -19,6 +19,7 @@ namespace LaMorisca
         public FormBuscarEmpleado()
         {
             InitializeComponent();
+            builder = new QueryBuilder(Program.conexion);
         }
 
         private void btnAgregar_Click(object sender, EventArgs e)
@@ -27,60 +28,53 @@ namespace LaMorisca
             {
                 MessageBox.Show("El empleado no existe");
                 Tools.setBoxemptys(Controls);
-                pcfoto.Image = null;
+                //pcfoto.Image = null;
                 btnEditar.Enabled = false;
             }
             else
             {
                 try
                 {
-                    IDbConnection conexion = new SqlConnection
-                                (Program.conexion);
-                    conexion.Open();
-                    IDbCommand dbcmd = conexion.CreateCommand();
-                    dbcmd.CommandText = "SELECT * FROM EMPLEADO where idempleado='" + txtID.Text + "';";
-
-                    IDataReader read = dbcmd.ExecuteReader();
-                    while (read.Read())
+                    Dictionary<string, string> dic =
+                        builder.getField(
+                            "EMPLEADO",
+                            "where idempleado = '" + txtID.Text + "'",
+                            "idempleado",
+                            "idsucursal",
+                            "nombre",
+                            "apellido",
+                            "direccion",
+                            "telefono"
+                            );
+                    string puesto = dic["idempleado0"];
+                    switch ((char)puesto.ToCharArray().GetValue(1))
                     {
-                        string puesto = read.GetString(read.GetOrdinal("idempleado"));
-
-                        switch ((char)puesto.ToCharArray().GetValue(1))
-                        {
-                            case 'A':
-                                txtRol.Text = "Administrativo";
-                                break;
-                            case 'G':
-                                txtRol.Text = "Gerente";
-                                break;
-                            case 'C':
-                                txtRol.Text = "Cajero";
-                                break;
-                            case 'B':
-                                txtRol.Text = "Barman";
-                                break;
-                            case 'R':
-                                txtRol.Text = "Repartidor";
-                                break;
-                            case 'E':
-                                txtRol.Text = "Encargado de bodega";
-                                break;
-                        }
-                        txtSucursal.Text = read.GetString(read.GetOrdinal("idsucursal"));
-                        txtNombreEmpleado.Text = read.GetString(read.GetOrdinal("nombre"));
-                        txtApellidoEmpleado.Text = read.GetString(read.GetOrdinal("apellido"));
-                        txtDireccion.Text = read.GetString(read.GetOrdinal("direccion"));
-                        txtTelefono.Text = read.GetString(read.GetOrdinal("telefono"));
-                        string foto = read.GetString(read.GetOrdinal("imagen"));
-                        string cargarfoto = Application.StartupPath + "\\Fotos\\" + foto;
-                        if (System.IO.File.Exists(cargarfoto))
-                            pcfoto.Image = new Bitmap(cargarfoto);
-                        else
-                        {
-                            MessageBox.Show("Se ha eliminado el archivo de foto!");
-                        }
-                        btnEditar.Enabled = true;
+                        case 'A':
+                            txtRol.Text = "Administrativo";
+                            break;
+                        case 'G':
+                            txtRol.Text = "Gerente";
+                            break;
+                        case 'C':
+                            txtRol.Text = "Cajero";
+                            break;
+                        case 'B':
+                            txtRol.Text = "Barman";
+                            break;
+                        case 'R':
+                            txtRol.Text = "Repartidor";
+                            break;
+                        case 'E':
+                            txtRol.Text = "Encargado de bodega";
+                            break;
                     }
+                    txtSucursal.Text = dic["idsucursal0"];
+                    txtNombreEmpleado.Text = dic["nombre0"];
+                    txtApellidoEmpleado.Text = dic["apellido0"];
+                    txtDireccion.Text = dic["direccion0"];
+                    txtTelefono.Text = dic["telefono0"];
+
+
 
                 }
                 catch (Exception ex)
@@ -89,6 +83,7 @@ namespace LaMorisca
                 }
             }
         }
+        
 
         private void btnCancelar_Click(object sender, EventArgs e)
         {
@@ -132,8 +127,8 @@ namespace LaMorisca
 
         private void btnEliminar_Click(object sender, EventArgs e)
         {
-            string info = DeleteParameters.DeletewhitString(Program.conexion, "empleado", "idempleado", "empleado", txtID.Text);
-            if(info=="OK")
+            DeleteParameters.LogicDelete(builder, txtID.Text, "idempleado", "Empleado", "baja");
+            if (DeleteParameters.LogicDelete(builder, txtID.Text, "idempleado", "Empleado", "baja"))
             {
                 btnEliminar.Enabled = false;
                 btnmodificar.Enabled = false;
@@ -145,8 +140,8 @@ namespace LaMorisca
                 txtTelefono.Enabled = false;
                 txtID.Focus();
             }
-            else if (info.Substring(0, 12) == "ERROR: 23503")
-                MessageBox.Show("Este empleado ya esta en una transaccion, por lo que no es posible borrarlo");
+            else
+                MessageBox.Show("Error al eliminar el empleado");
             
         }
 

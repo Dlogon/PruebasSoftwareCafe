@@ -79,7 +79,7 @@ namespace Connection
                 if (openConnection())
                 {
                     command.CommandText = "SELECT " + field + " FROM " + table + " " + conditions;
-                    command.Parameters.Add(new SqlParameter("@" + field, field));
+                 //   command.Parameters.Add(new SqlParameter("@" + field, field));
                     string ob = Convert.ToString(command.ExecuteScalar());
                     if (ob=="")
                         return null;
@@ -91,7 +91,7 @@ namespace Connection
             }
             catch(SqlException e)
             {
-                MessageBox.Show("ERROR EN LA OPERACION oledb " + e.Message, "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("ERROR EN LA OPERACION  " + e.Message + " " + e.Number, "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return null;
             }
             catch(Exception e)
@@ -143,7 +143,7 @@ namespace Connection
                     return ret;
                 }
                 else
-                    throw new Exception();
+                    throw new Exception("NoDicExc");
             }
             catch (SqlException e)
             {

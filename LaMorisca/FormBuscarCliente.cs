@@ -19,31 +19,24 @@ namespace LaMorisca
         public FormBuscarCliente()
         {
             InitializeComponent();
+            builder = new QueryBuilder(Program.conexion);
         }
-        //private QueryBuilder;
+        private QueryBuilder builder;
         private void btnAgregar_Click(object sender, EventArgs e)
         {
-            bool encontro = false;
             try
             {
-                IDbConnection conexion = new SqlConnection(Program.conexion);
-                conexion.Open();
-                IDbCommand dbcmd = conexion.CreateCommand();
-                dbcmd.CommandText = "SELECT * FROM CLIENTE where idcliente='" + txtIDCliente.Text + "';";
-
-                IDataReader read = dbcmd.ExecuteReader();
-                conexion.Close();
-                while (read.Read())
+                Dictionary<string, string> dic = builder.getField("ClIENTE",
+                    "where idcliente = '" + txtIDCliente.Text + "'", "Nombre", "Direccion", "telefono", "saldo");
+                if (dic != null)
                 {
-                    txtNombre.Text = read.GetString(read.GetOrdinal("Nombre"));
-                    txtDireccion.Text = read.GetString(read.GetOrdinal("direccion"));
-                    txtTelefono.Text = read.GetString(read.GetOrdinal("telefono"));
-                    txtSaldo.Text = read.GetDecimal(read.GetOrdinal("saldo")).ToString()+"$";
-
-                    encontro = true;
+                    txtNombre.Text = dic["Nombre0"];
+                    txtDireccion.Text = dic["direccion0"];
+                    txtTelefono.Text = dic["telefono0"];
+                    txtSaldo.Text = dic["saldo"].ToString() + "$";
                     btnEditar.Enabled = true;
                 }
-                if (!encontro)
+                else
                 {
                     MessageBox.Show("No se encuentra el registro");
                     Tools.setBoxemptys(Controls);
@@ -97,9 +90,10 @@ namespace LaMorisca
 
         private void btnEliminar_Click(object sender, EventArgs e)
         {
-            string info = DeleteParameters.DeletewhitString(Program.conexion, "cliente", "idcliente", "cliente", txtIDCliente.Text);
-            if (info.Substring(0, 12) == "ERROR: 23503")
-                MessageBox.Show("Este cliente ya esta en una transaccion, por lo que no es posible borrarlo");
+           if(DeleteParameters.LogicDelete(builder, txtIDCliente.Text, "idcliente", "Cliente", "baja"))
+                MessageBox.Show("REgistro Eliminado correctamente");
+           else
+                MessageBox.Show("Error al borrar el registro");
         }
 
         private void txtTelefono_KeyPress(object sender, KeyPressEventArgs e)
