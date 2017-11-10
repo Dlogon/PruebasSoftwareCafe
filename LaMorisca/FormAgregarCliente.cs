@@ -22,7 +22,7 @@ namespace LaMorisca
             string tipe = "CLI";
             try
             {
-                string ultimo=builder.getField("Cliente", "idcliente", "order by idcliente desc");
+                string ultimo=builder.getField("Cliente", "idcliente",  " order by substring(idcliente, 0, LEN(idcliente)) desc ");
 
                 if (ultimo==null)
                 {

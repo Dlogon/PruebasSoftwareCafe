@@ -441,7 +441,7 @@ namespace LaMorisca
                         queryUp = "INSERT INTO detalleventa VALUES(" +
                             "'" +idproduct + "', " +
                             "" + txtfolio.Text + ", " +
-                            "" + precio.Substring(0,precio.Length-1) + ", " +
+                            "" + precio.Substring(0,precio.Length-1).Replace(',', '.') + ", " +
                                 dtaGrid.Rows[contador].Cells[3].Value + ");";
                         cmdUp = new SqlCommand(queryUp, conexion);
                         cmdUp.ExecuteNonQuery();

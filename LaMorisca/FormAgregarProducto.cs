@@ -45,6 +45,7 @@ namespace LaMorisca
                         "" + txtDetalles.Text + "",
                         "" + txtNombre.Text + "",
                         "" + txtProveedor.Text +"",
+                        0.ToString(),
                         (numPreciolista.Value).ToString()
                     }
                     );
