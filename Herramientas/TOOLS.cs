@@ -18,9 +18,10 @@ namespace Herramientas
         {
 
             QueryBuilder builder = new QueryBuilder(con);
+            IDataReader reader = null;
             try
             {
-                IDataReader reader = builder.returnReader(tabla, null, id);
+                reader = builder.returnReader(tabla, null, id);
                 if (reader != null)
                 {
                     while (reader.Read())
@@ -35,7 +36,8 @@ namespace Herramientas
             }
             finally
             {
-                
+                if (reader != null)
+                    reader.Close();
             }
         }
 
@@ -306,7 +308,7 @@ namespace Herramientas
                 IDataReader reader = dbcmd.ExecuteReader();
                 if (reader.Read())
                 {
-                    conexion.Close();
+                    
                     return reader.GetString(reader.GetOrdinal("nombre"));
                     
                 }

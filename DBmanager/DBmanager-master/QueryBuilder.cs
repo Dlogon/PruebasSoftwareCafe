@@ -163,18 +163,43 @@ namespace Connection
             }
         }
         
-        public IDataReader returnReader(string table, string conditions, params string[] fields) 
+        public SqlDataReader returnReader(string table, string conditions, params string[] fields) 
         {
-            if(openConnection())
+            try
             {
-                string campos = string.Join(" , ", fields);
-                command.CommandText = "SELECT " + campos + " FROM " + table + " " + conditions;
-                SqlDataReader reader= command.ExecuteReader();
-                if (!reader.HasRows)
-                    return null;
-                return reader;
+                if (openConnection())
+                {
+                    string campos = string.Join(" , ", fields);
+                    //var read = (new SqlCommand("SELECT idsucursal FROM Sucursal", this.conn)).ExecuteReader(CommandBehavior.SequentialAccess);
+                    command.CommandText = "SELECT " + campos + " FROM " + table + " " + conditions;
+                    command.CommandType = CommandType.Text;
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    if (!reader.HasRows)
+                        return null;
+                    //while (reader.Read())
+                    //{
+                    //    var a  = reader.GetValue(0);
+                    //}
+                    return reader;
+                }
+                return null;
             }
-            return null;
+            catch (SqlException e)
+            {
+                MessageBox.Show("ERROR EN LA OPERACION oledb" + e.Message + e.ErrorCode, "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
+            }
+
+            catch (Exception e)
+            {
+                MessageBox.Show("ERROR EN LA OPERACION gen " + e.GetBaseException() + e.Message + e.Data, "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
+            }
+            finally
+            {
+                
+            }
         }
 
         public bool insertFields(string table, params string[] fields)
@@ -219,7 +244,7 @@ namespace Connection
                     parameters[i] = fieldsName[i] + " = @param" + i + "  ";
                 }
                 string campos = string.Join(" , ", parameters);
-                command.CommandText = "UPDATE " + table + "SET " + campos + "  " + conditions;
+                command.CommandText = "UPDATE " + table + " SET " + campos + "  " + conditions;
                 for (int i = 0; i < fields.Length; i++)
                     command.Parameters.Add(new SqlParameter("@param" + i, fields[i]));
                 if (command.ExecuteNonQuery() <= 0)

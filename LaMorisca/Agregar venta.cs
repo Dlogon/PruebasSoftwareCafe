@@ -23,6 +23,7 @@ namespace LaMorisca
         {
             InitializeComponent();
             sucur = "";
+            builder = new QueryBuilder(Program.conexion);
         }
 
         private void Agregar_venta_Load(object sender, EventArgs e)
@@ -418,12 +419,12 @@ namespace LaMorisca
                         "'" + txtfecha.Text + "', "+igual+" ," +
                     "'" + txtIdEmpleado.Text + "'," +
                     "'" + txtIdCliente.Text + "');";
-                    comando.ExecuteReader();
+                    comando.ExecuteNonQuery();
                     if (!btnentregada.Checked)
                     {
                         comando.CommandText =
-                          "Update cliente set saldo = saldo +" + txtTotal.Text.Substring(0, txtTotal.Text.Length - 1)+ "where idcliente='"+txtIdCliente.Text+"'";
-                    comando.ExecuteReader();
+                          "Update cliente set saldo = saldo +" +txtTotal.Text.Substring(0, txtTotal.Text.Length - 1).Replace(',','.') + " where idcliente='"+txtIdCliente.Text+"'";
+                        comando.ExecuteNonQuery();
                     }
                     int contador = 0, existnew;
 
@@ -437,8 +438,8 @@ namespace LaMorisca
                         cmdUp = new SqlCommand(queryUp, conexion);
                         cmdUp.ExecuteNonQuery();
                         string precio = dtaGrid.Rows[contador].Cells[4].Value.ToString();
-                        queryUp = "INSERT INTO detalleventa VALUES('" +
-                            idproduct + "', " +
+                        queryUp = "INSERT INTO detalleventa VALUES(" +
+                            "'" +idproduct + "', " +
                             "" + txtfolio.Text + ", " +
                             "" + precio.Substring(0,precio.Length-1) + ", " +
                                 dtaGrid.Rows[contador].Cells[3].Value + ");";

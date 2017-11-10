@@ -78,10 +78,10 @@ namespace LaMorisca
                 if (builder.getField("Producto", "idproducto", "where idproducto=" + idprod) != null)
                 {
 
-                    IDataReader read = builder.returnReader("Sucursal", null, "id");
+                    IDataReader read = builder.returnReader("Sucursal", " where 1=1", "idsucursal");
                     while (read.Read())
                     {
-                        builder.insertFields("existencia", new string[] { "0", read.GetOrdinal("idsucursal").ToString(), idprod });
+                        builder.insertFields("existencia", new string[] { "0", read.GetString(read.GetOrdinal("idsucursal")), idprod });
                     }
                 }
             }
@@ -100,13 +100,13 @@ namespace LaMorisca
             {
                 try
                 {
-
+                    var fecha = DateTime.Now.ToString("yyyy/MM/dd");
                     builder.insertFields("PEDIDO", new string[]
                         {
                             txtfolio.Text,
-                            "'" + txtfecha.Text + "'",
-                            "'" + txtProveedor.Text + "'",
-                            "'" + txtSucursal.Text + "'"
+                             fecha  ,
+                             txtProveedor.Text ,
+                            txtSucursal.Text 
                         }
                         );
                     
@@ -120,18 +120,20 @@ namespace LaMorisca
                         existnew =Convert.ToInt32(dtaGrid.Rows[contador].Cells[3].Value);
                         string queryUp ="update existencia set cantidad=cantidad + " + existnew +
                             " where producto = '" + idproduct + "' AND SUCURSAL = '"+ txtSucursal.Text+ "';";
-                        builder.updateTable(
-                            "EXISTENCIA",
-                            " where producto = '" + idproduct + "' AND SUCURSAL = '" + txtSucursal.Text + "'",
-                            new string[] { "CANTIDAD" },
-                            " cantidad +" + existnew 
-                            );
+
+                        builder.queryejecutor(queryUp);
+                        //builder.updateTable(
+                        //    "EXISTENCIA",
+                        //    " where producto = '" + idproduct + "' AND SUCURSAL = '" + txtSucursal.Text + "'",
+                        //    new string[] { "CANTIDAD" },
+                        //    " cantidad +" + existnew 
+                        //    );
                         string precio = dtaGrid.Rows[contador].Cells[4].Value.ToString();
                         builder.insertFields("PEDIDODETALLE", new string[]
                             {
                                 txtfolio.Text,
-                                "'" + idproduct + "'",
-                                "" + dtaGrid.Rows[contador].Cells[3].Value + "",
+                                idproduct ,
+                               dtaGrid.Rows[contador].Cells[3].Value.ToString() ,
                                 precio.Substring(0, precio.Length - 1)
                             }
                             );

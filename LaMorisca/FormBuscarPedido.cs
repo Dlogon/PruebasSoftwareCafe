@@ -58,11 +58,12 @@ namespace LaMorisca
                 {
                     txtProveedor.Text = read.GetString(read.GetOrdinal("idproveedor"));
                     txtNombreProv.Text = read.GetString(read.GetOrdinal("nombre"));
-                    DateTime t = read.GetDateTime(read.GetOrdinal("fecha"));
-                    txtfecha.Text = t.Day + "/" + t.Month + "/" + t.Year;
+                   // DateTime t = read.GetDateTime(read.GetOrdinal("fecha"));
+                    txtfecha.Text = read.GetString(read.GetOrdinal("fecha"));
                     txtIdSucursal.Text = read.GetString(read.GetOrdinal("sucursal"));
                     txtNombreSucursal.Text = read.GetString(read.GetOrdinal("direccion"));
-                    NpgsqlDataAdapter cons = new NpgsqlDataAdapter(
+
+                    SqlDataAdapter cons = new SqlDataAdapter(
                         "SELECT  producto as IDproducto, producto.nombre,  cantidad, pedidodetalle.precio, cantidad*pedidodetalle.precio as importe " +
                         " FROM pedidodetalle INNER JOIN producto on producto.idproducto=pedidodetalle.producto " +
                         " where folio=" + txtfolio.Text + "", Program.conexion)
